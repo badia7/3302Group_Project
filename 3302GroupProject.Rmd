@@ -1,0 +1,93 @@
+---
+title: "Economics Project"
+author: "Nicholas badia.7"
+date: "4/13/2023"
+output: pdf_document
+---
+
+```{r}
+hd = read.csv("/Users/nickbadia/Downloads/heart_2020_cleaned.csv")
+
+hd$HeartDisease<-ifelse(hd$HeartDisease=="Yes",1,0)
+
+hd$Asthma<-ifelse(hd$Asthma=="Yes",1,0)
+hd$SkinCancer<-ifelse(hd$SkinCancer=="Yes",1,0)
+hd$KidneyDisease<-ifelse(hd$KidneyDisease=="Yes",1,0)
+
+
+graph1 <- factor(hd$SkinCancer)
+
+levels(graph1) <- c("No", "Yes")
+
+tab <- table(hd$HeartDisease, graph1)
+
+barplot(tab,
+        main = "Skin Cancer and Heart Disease",
+        xlab = "Skin Cancer", ylab = "Frequency",
+        col = c("darkblue", "red"),
+        legend.text = c("No Heart Disease", "Heart Disease"),
+        beside = TRUE) # Grouped bars
+
+
+graph2 <- factor(hd$Diabetic)
+
+levels(graph1) <- c("No", "No (borderline diabetes)", "Yes (during pregnancy)", "Yes")
+
+tab2 <- table(hd$HeartDisease, graph2)
+
+barplot(tab2,
+        main = "Diabetes and Heart Disease",
+        xlab = "Diabetes", ylab = "Frequency",
+        col = c("darkblue", "red"),
+        legend.text = c("No Heart Disease", "Heart Disease"),
+        beside = TRUE) # Grouped bars
+
+
+graph3 <- factor(hd$Asthma)
+
+levels(graph3) <- c("No", "Yes")
+
+tab3 <- table(hd$HeartDisease,graph3)
+
+barplot(tab3,
+        main = "Asthma and Heart Disease",
+        xlab = "Asthmatic", ylab = "Frequency",
+        col = c("darkblue", "red"),
+        legend.text = c("No Heart Disease", "Heart Disease"),
+        beside = TRUE) # Grouped bars
+
+
+
+graph4 <- factor(hd$KidneyDisease)
+
+levels(graph4) <- c("No", "Yes")
+
+tab4 <- table(hd$HeartDisease, graph4)
+
+barplot(tab4,
+        main = "Kidney Disease and Heart Disease",
+        xlab = "Kidney Disease", ylab = "Frequency",
+        col = c("darkblue", "red"),
+        legend.text = c("No Heart Disease", "Heart Disease"),
+        beside = TRUE) # Grouped bars
+
+sub2 = subset(hd, HeartDisease==1)
+sub1 = subset(hd, HeartDisease==0)
+
+
+prop.test(x = c(4933, 37939), n = c(27373, 292422))
+
+prop.test(x = c(4980, 24839), n = c(27373, 292422))
+
+prop.test(x = c(4980, 24839), n = c(27373, 292422))
+
+
+
+diabetes.fac=factor(hd$Diabetic)
+
+summary(glm(hd$HeartDisease~diabetes.fac, data=hd))
+
+mod1 = glm(hd$HeartDisease~hd$Asthma+diabetes.fac+hd$KidneyDisease+hd$SkinCancer)
+summary(mod1)
+```
+
